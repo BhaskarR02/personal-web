@@ -1,0 +1,19 @@
+npm install -g grunt cli
+We need two files
+  1)package.json
+  2)Gruntfile.js
+
+Install grunt command:  npm install grunt --save-dev
+  --save will save it in project.
+  -dev will install its dependency in package.json
+
+  *** Install ***               *** Command ***
+
+ 1 Create package.json            npm init ****
+ 2 Install grunt                  npm install -g grunt-cli
+ 3 Install grunt-contrib-less     npm install grunt-contrib-less --save-dev
+ 4 Install grunt-contrib-watch    npm install grunt-contrib-watch
+ 5 Install grunt-contrib-jshint   npm install grunt-contrib-jshint
+
+  ***
+

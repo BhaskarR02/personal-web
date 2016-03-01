@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="
+http://www.springframework.org/schema/webflow
+http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+<var name="primaryBooking" class="com.transport.model.PrimaryBooking" />
+<var name="bookingTransportSelect" class="com.transport.model.BookingTransportSelect"/>
+<!-- <on-start>
+	<evaluate expression="transport.getBookingTypePage(flowRequestContext)"></evaluate>
+</on-start> -->
+<on-start>
+	<evaluate expression="transportWebFlow.getTransportMode(flowRequestContext)" result="flowScope.travelMode"/>
+	<evaluate expression="transportWebFlow.getBookingTypePage(flowRequestContext)" result="flowScope.bookingType"/>
+	
+	
+	
+</on-start>
+<view-state id="primaryBooking" model="primaryBooking" view="/WEB-INF/jsp/hello.jsp">
+<transition on="bookingType" bind="false">
+<evaluate expression="transportWebFlow.hello()" result="flowScope.countries"/>
+</transition>
+</view-state>
+
+
+
+
+
+
+</flow>

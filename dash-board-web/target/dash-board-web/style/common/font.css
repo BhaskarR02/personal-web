@@ -1,0 +1,32 @@
+/* @font-face {
+	font-family: 'BAHAMAS0';
+	src: url('../font/BAHAMAS0.eot');
+	src: ../font/('BAHAMAS0'), url('../font//BAHAMAS0.woff') format('woff'), url('../font/BAHAMAS0.ttf') format('truetype');
+}
+use this class to attach this font to any element i.e. <p class="fontsforweb_fontid_38044">Text with this font applied</p>
+.fontsforweb_fontid_38044 {
+	font-family: 'BAHAMAS0' !important;
+} */
+
+/* @font-face{
+		font-family: "BAHAMAS0";
+		src: url("../font/BAHAMAS0.eot");
+		#src: src: url("../font/Armata-Regular-webfont.svg");
+		src: url("../font/BAHAMAS0.ttf");
+		src: url("../font/BAHAMAS0.woff");
+	}
+	@font-face{
+		font-family: "TNR";
+		#src: url("../font/BAHAMAS0.eot");
+		#src: src: url("../font/Armata-Regular-webfont.svg");
+		src: url("../font/LiberationSerif-Bold.ttf");
+		#src: url("../font/BAHAMAS0.woff");
+	}
+	body,select,input {
+		font-family: "TNR";
+		font-size: 17px;
+		color: wheat ;
+	}
+	select,input{
+	color: black ;
+	} */

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+<mvc:annotation-driven/>
+
+	<bean id="tilesConfigurer"
+	class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+	<property name="definitions" >
+		<list>
+			<value>/WEB-INF/tiles.xml</value>
+			<value>/WEB-INF/flowTiles/flowTiles.xml</value>
+			<value>/WEB-INF/flowTiles/applicationWebFlowTiles.xml</value>
+		</list>
+	</property>
+	</bean>
+	
+<!-- <bean id="tilesViewResolver"
+	class="org.springframework.web.servlet.view.tiles2.TilesViewResolver"
+	p:order="0" p:viewClass="org.springframework.web.servlet.view.tiles2.TilesView"/> -->
+	
+	 <bean id="tilesViewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
+	 <property name="viewClass">
+        <value>
+            org.springframework.web.servlet.view.tiles3.TilesView
+        </value>
+    </property>
+	
+	</bean> 
+	
+	<!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+    <property name="viewClass">
+        <value>
+            org.springframework.web.servlet.view.tiles2.TilesView
+        </value>
+    </property>
+</bean> -->
+			
+	
+	
+	
+<bean id="jspViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<property name="maxUploadSize" value="20480"/>
+	<property name="maxInMemorySize" value="10240"/>
+	</bean>
+	
+	<bean id="jacksonMessageChanger" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+	<property name="supportedMediaTypes" value="application/json"/>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	<property name="messageConverters">
+	<list>
+	<ref bean = "jacksonMessageChanger"/>
+	</list>
+	</property>
+	 </bean>
+	
+	<!-- <bean id="pdsManagerService" class="com.bhaskar.service.PdsManager">
+	<description>List of Dao in PDS MANAGER</description>
+	<property name="countryDao" ref="countryDao"/>
+	<property name="stateDao" ref="stateDao"/>
+	</bean>
+	<bean id="pdsHomeManagerService" class="com.bhaskar.service.HomeManager">
+		<property name="accountTypeDao" ref="accountTypeDao"/>
+		<property name="stockMarketDao" ref="stockMarketDao"/>
+	</bean>
+	
+	<bean id="publicDistributionController" class="com.bhaskar.web.PublicDistributionController">
+	<property name="iPdsSummaryInterface" ref="pdsManagerService"/>
+	<property name="iHomeServiceManager" ref="pdsHomeManagerService"/>
+	</bean>
+	
+	
+	<bean id="shoppingService" class="com.bhaskar.shopping.service.ShopingService">
+		<property name="shoppingBrandMasterDao" ref="shoppingBrandMasterDao"/>
+	</bean>
+	
+	<bean id="shoppingController" class="com.bhaskar.shopping.controller.ShoppingController" >
+		<property name="iShopping" ref="shoppingService"/>
+	</bean> -->
+	
+	
+	<!-- <bean id="ibilling" class="com.expenses.service.BillingCalculatorServices">
+		 <property name="basicValueDao" ref="basicValueDao"/> 
+		 <property name="getRegisteredUserDao" ref="iGetRegisteredUserDao"/>
+	</bean> -->
+	
+	
+	
+	<!-- <bean id="billController" class="com.expenses.controller.BillCalculatorController">
+		<property name="ibilling" ref="ibilling"/>
+		
+	</bean> -->
+	
+	<bean id="iBoardUserInterface" class="com.dashBoardUser.services.DashBoardUserServices">
+	    <property name="dashBoardUserDao" ref="dashBoardUserDao"/>
+	</bean>
+	
+	<bean id="pwersonalHomeController" class="com.personalweb.controllers.PersonalWebController">
+	     <property name="iBoardUserInterface" ref="iBoardUserInterface"/>
+	</bean>
+	
+	
+	
+</beans>

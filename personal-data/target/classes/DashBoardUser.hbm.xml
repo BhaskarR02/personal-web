@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 17 Feb, 2016 11:26:43 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dashboard.entity.DashBoardUser" table="userlogin.dashboarduser">
+        <id name="userName" type="java.lang.String">
+            <column name="username" />
+            <generator class="assigned" />
+        </id>
+        <property name="userEmail" type="java.lang.String">
+            <column name="userlogname" />
+        </property>
+        <property name="userpassword" type="java.lang.String">
+            <column name="userpassword" />
+        </property>
+        <property name="userbirth" type="java.util.Date">
+            <column name="userbirth" />
+        </property>
+        <property name="usergender" type="boolean">
+            <column name="usergender" />
+        </property>
+    </class>
+    <query name="getUser"> from DashBoardUser </query>
+</hibernate-mapping>

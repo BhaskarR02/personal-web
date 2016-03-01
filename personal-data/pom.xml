@@ -1,0 +1,205 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+  http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>orange-personal-data</groupId>
+  <version>0.0.1</version>
+  <name>Data Manipulation For Personal Dashboard</name>
+  <properties>
+		  <javac.version>1.6</javac.version>
+		  <org.springframework-version>3.2.0.RELEASE</org.springframework-version>
+		  <spring-version>3.2.0.RELEASE</spring-version>
+		  <hibernate.version>4.1.0.Final</hibernate.version>
+		  <junit.version>4.8.2</junit.version>
+		  <tiles.version>2.2.2</tiles.version>
+		  <aspectj.version>1.6.5.RELEASE</aspectj.version>
+  </properties>
+  <dependencies>
+		  <dependency>
+		  		<groupId>org.springframework</groupId>
+		  		<artifactId>spring-core</artifactId>
+		  		<version>${org.springframework-version}</version>
+		</dependency>  
+  		<dependency>
+		  		<groupId>postgresql</groupId>
+		  		<artifactId>postgresql</artifactId>
+		  		<version>9.1-901.jdbc4</version>
+		</dependency>  
+  		<dependency>
+		  		<groupId>org.slf4j</groupId>
+		  		<artifactId>jcl-over-slf4j</artifactId>
+		  		<version>1.6.1</version>
+		</dependency>  
+  		<dependency>
+		  		<groupId>org.slf4j</groupId>
+		  		<artifactId>slf4j-log4j12</artifactId>
+		  		<version>1.6.1</version>
+		</dependency>  
+  		<dependency>
+		  		<groupId>commons-lang</groupId>
+		  		<artifactId>commons-lang</artifactId>
+		  		<version>2.4</version>
+		</dependency>  
+		<dependency>
+		  		<groupId>org.springframework</groupId>
+		  		<artifactId>spring-context</artifactId>
+		  		<version>${org.springframework-version}</version>
+			  		<exclusions>
+				  		<exclusion>
+				  		<artifactId>spring-expression</artifactId>
+				  		<groupId>org.springframework</groupId>
+				  		</exclusion>
+			  		</exclusions>
+		</dependency>  	
+		<dependency>
+		  		<groupId>org.springframework</groupId>
+		  		<artifactId>spring-beans</artifactId>
+		  		<version>${org.springframework-version}</version>
+		</dependency>  
+		<dependency>
+		  		<groupId>org.springframework</groupId>
+		  		<artifactId>spring-expression</artifactId>
+		  		<version>${org.springframework-version}</version>
+		</dependency> 
+		<dependency>
+		  		<groupId>org.springframework</groupId>
+		  		<artifactId>spring-test</artifactId>
+		  		<version>${org.springframework-version}</version>
+		  		<scope>test</scope>
+		</dependency> 
+		<dependency>
+		  		<groupId>org.springframework</groupId>
+		  		<artifactId>spring-aspects</artifactId>
+		  		<version>${org.springframework-version}</version>
+		</dependency> 
+		<dependency>
+		  		<groupId>org.springframework</groupId>
+		  		<artifactId>spring-aop</artifactId>
+		  		<version>${org.springframework-version}</version>
+		</dependency> 
+		 <dependency>
+		  		<groupId>com.infosys.tedge</groupId>
+		  		<artifactId>da-base</artifactId>
+		  		<version>0.0.1</version>
+		</dependency>
+		<dependency>
+		  		<groupId>org.springframework</groupId>
+		  		<artifactId>spring-tx</artifactId>
+		  		<version>3.1.0.RELEASE</version>
+		  		<type>jar</type>
+		  		<scope>compile</scope>
+		</dependency>
+		<dependency>
+		  		<groupId>org.springframework</groupId>
+		  		<artifactId>spring-orm</artifactId>
+		  		<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+		  		<groupId>junit</groupId>
+		  		<artifactId>junit</artifactId>
+		  		<version>4.7</version>
+		  				<scope>test</scope>
+		</dependency>
+		<dependency>
+		  		<groupId>org.apache.maven.surefire</groupId>
+		  		<artifactId>surefire-junit4</artifactId>
+		  		<version>2.7.2</version>
+		</dependency>
+		
+		<dependency>
+		  		<groupId>org.hibernate</groupId>
+		  		<artifactId>hibernate-validator</artifactId>
+		  		<version>${hibernate.version}</version>
+		  		<type>jar</type>
+		  		<scope>compile</scope>
+		  		<exclusions>
+		  		<exclusion>
+		  		<groupId>javax.xml.bind</groupId>
+		  		<artifactId>jaxb-api</artifactId>
+		  		</exclusion>
+		  		
+		  		<exclusion>
+		  		<groupId>com.sun.xml.bind</groupId>
+		  		<artifactId>jaxb-impl</artifactId>
+		  		</exclusion>
+		  		</exclusions>
+		</dependency>
+		
+		<!-- Added on 16th Sept -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>4.1.0.Final</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>commons-collections</groupId>
+		<artifactId>commons-collections</artifactId>
+		<version>3.2.1</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>antlr</groupId>
+		<artifactId>antlr</artifactId>
+		<version>2.7.7</version>
+</dependency>
+
+<dependency>
+		<groupId>org.jboss.spec.javax.transaction</groupId>
+		<artifactId>jboss-transaction-api_1.1_spec</artifactId>
+		<version>1.0.0.Final</version>
+</dependency>
+
+<dependency>
+	<groupId>dom4j</groupId>
+	<artifactId>dom4j</artifactId>
+	<version>1.6.1</version>
+</dependency>
+
+<dependency>
+	<groupId>xml-apis</groupId>
+	<artifactId>xml-apis</artifactId>
+	<version>1.0.b2</version>
+</dependency>
+            
+<dependency>
+	<groupId>org.hibernate.javax.persistence</groupId>
+	<artifactId>hibernate-jpa-2.0-api</artifactId>
+	<version>1.0.0.Final</version>
+</dependency>
+            
+<dependency>
+	<groupId>org.jboss.logging</groupId>
+	<artifactId>jboss-logging</artifactId>
+	<version>3.1.0.CR2</version>
+</dependency>
+
+<dependency>
+	<groupId>org.javassist</groupId>
+	<artifactId>javassist</artifactId>
+	<version>3.15.0-GA</version>
+</dependency>
+            
+<dependency>
+	<groupId>org.hibernate.common</groupId>
+	<artifactId>hibernate-commons-annotations</artifactId>
+	<version>4.0.1.Final</version>
+</dependency>
+            
+       
+  </dependencies>
+<!--   <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build> -->
+	<artifactId>personal.data</artifactId>
+</project>

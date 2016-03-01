@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+<definition name="base.defination" template="/WEB-INF/views/layout.jsp">
+<put-attribute name="title" value=""/>
+<put-attribute name="header" value=""/>
+<put-attribute name="body" value=""/>
+<put-attribute name="footer" value=""/>
+<put-attribute name="jqgrid" value=""></put-attribute>
+
+
+<put-list-attribute name="javascripts">
+<add-attribute value="js/defaultjs/jquery-1.10.2.js"></add-attribute>
+<add-attribute value="js/defaultjs/jquery-ui.js"></add-attribute>
+<add-attribute value="js/bootstrap/bootstrap.js"></add-attribute>
+<add-attribute value="js/bootstrap/npm.js"></add-attribute> 
+<add-attribute value="js/defaultjs/angular.js"/>
+<add-attribute value="js/defaultjs/angular-route.js"/>
+<add-attribute value="js/defaultjs/angular-sanitize.js"/>
+<add-attribute value="js/angular-custom/dropDownDirective.js"/>
+<add-attribute value="js/applicationBoot.js"/>
+
+</put-list-attribute>
+
+<put-list-attribute name="stylesheets">
+	<add-attribute value="style/jquery-ui.css"></add-attribute>
+	<add-attribute value="style/font.css"></add-attribute>
+	<add-attribute value="style/bootstrap/bootstrap.css"></add-attribute>
+	<add-attribute value="style/bootstrap/bootstrap-theme.css"></add-attribute>
+	<add-attribute value="style/application.css"></add-attribute>
+	<add-attribute value="style/applicationLibrary.css"></add-attribute>
+	<add-attribute value="style/appOverlay.css"></add-attribute>
+</put-list-attribute>
+
+
+</definition>
+
+<definition name="applicationLogin" extends="base.defination">
+	<put-attribute name="title" value="Orange"/>
+	<put-attribute name="header" value=""></put-attribute>
+    <!-- <put-attribute name="body" value="/WEB-INF/views/applicationLogin.jsp"/> -->
+    <put-attribute name="body">
+    	<definition template="/WEB-INF/views/applicationLogin.jsp" name="applicationLoginDefault" extends="applicationLogin">
+    	<put-attribute name="login" value="/WEB-INF/views/applicationLogin/login.jsp"/>
+    	<put-attribute name="signUp" value="/WEB-INF/views/applicationLogin/signUp.jsp"/>
+    	
+    	</definition>
+    </put-attribute>
+    
+    
+    <put-attribute name="footer" value=""/>
+    
+   <put-list-attribute name="javascripts" inherit="true">
+      <add-attribute value="js/applicationLogin/login_p.js"/>
+	  <add-attribute value="js/applicationLogin/loginBoot.js"></add-attribute>
+	  
+   </put-list-attribute> 
+    
+    <put-list-attribute name="stylesheets" inherit="true">
+	<add-attribute value="style/pdsStyleSheet.css"></add-attribute>
+    </put-list-attribute>
+    
+    
+</definition>
+
+<definition name="signUp" extends="base.defination">
+	<put-attribute name="title" value="3Tiles"/>
+	<put-attribute name="body" value="/WEB-INF/views/signUp.jsp"/>
+	
+<put-list-attribute name="javascripts" inherit="true">
+	
+	<add-attribute value="js/createUser/createUser.js"></add-attribute>
+</put-list-attribute>
+
+<put-list-attribute name="stylesheets" inherit="true">
+	<add-attribute value="style/pdsStyleSheet.css"></add-attribute>
+	<add-attribute value="style/custom/customCheckbox.css"></add-attribute>
+    <add-attribute value="style/custom/validateAccount.css"></add-attribute>
+</put-list-attribute>
+</definition>
+
+<definition name="bill" extends="base.defination">
+
+	<put-attribute name="title" value="Palace Bill"/>
+	<put-attribute name="header" value="header"></put-attribute>
+    <put-attribute name="body" value="/WEB-INF/views/billingCalculator/billing.jsp"></put-attribute>
+    <put-attribute name="footer" value="footer"></put-attribute>
+    <put-attribute name="jqgrid" value=""></put-attribute>
+    
+    
+    <put-list-attribute name="javascripts" inherit="true">
+    <add-attribute value="js/billing/billingAngularBoot.js"/>
+	<add-attribute value="js/billing/billingServices.js"/>
+	<add-attribute value="js/billing/billingController.js" />
+	</put-list-attribute>
+    
+    <put-list-attribute name="stylesheets" inherit="true">
+		<add-attribute value="style/billing/billingBasic.css"></add-attribute>
+	</put-list-attribute>
+</definition>
+
+
+<!-- <definition name="orange" extends="base.defination">
+
+	<put-attribute name="title" value="Orange"/>
+	<put-attribute name="header" value="header"/>
+	<put-attribute name ="body" value="/WEB-INF/views/billingCalculator/orange.jsp"/>
+	<put-attribute name = "footer" value="footer"/>
+	
+	   <put-list-attribute name = "javascripts" inherit="true">
+	        <add-attribute value="js/billing/Boot/loginBoot.js"/>
+	   		<add-attribute value="js/billing/Services/loginServices.js"/>
+	   		<add-attribute value="js/billing/Controller/loginController.js"/>
+	   </put-list-attribute>
+	   
+	    <put-list-attribute name="stylesheets" inherit="true">
+		<add-attribute value="style/billing/billingLogin.css"></add-attribute>
+	</put-list-attribute>
+
+
+</definition>
+ -->
+<definition name="shoppingBody" extends="base.defination">
+	<put-attribute name="title" value="ShoppingRules"/>
+	<put-attribute name="header"> 
+	    <definition template="/WEB-INF/views/views_shopping/shoppingHeader.jsp" extends="shoppingBody">
+		<put-attribute name="shoppingSearch" value="/WEB-INF/views/views_shopping/shoppingSearch.jsp"/>
+	</definition>
+	</put-attribute>
+	<put-attribute name="body" value="/WEB-INF/views/views_shopping/shoppingBody.jsp"/>	
+	<put-attribute name="footer" value="/WEB-INF/views/views_shopping/shoppingFooter.jsp"/>
+
+	<put-list-attribute name="javascripts" inherit="true">
+		<add-attribute value="js/shopping/shopBoot.js"/>
+	    <add-attribute value="js/angular-custom/angular-exception.js"/>
+		<add-attribute value="js/angular-custom/autocomplete/angular-autocomplete.js"/>	
+	
+    <!-- Shopping WebWorkers-->
+    
+       <!-- <add-attribute value="js/shopping/webworkers/electronicsWorkers.js"/> -->
+
+    <!--Directive Defination Objects-->
+
+       <add-attribute value="js/angular-custom/dropDownDirective.js"/>
+   </put-list-attribute>
+
+	<put-list-attribute name="stylesheets" inherit="true">
+		<add-attribute value="style/shopping/header.css"></add-attribute>
+		<add-attribute value="js/angular-custom/autocomplete/angular-autocomplete.css"/>
+	</put-list-attribute>
+
+</definition>
+
+
+</tiles-definitions>

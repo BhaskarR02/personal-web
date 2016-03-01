@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+<definition name="base.WebFlowDefination" template="/WEB-INF/views/layout_wfl.jsp">
+<put-attribute name="title" value="National Credit"/>
+<put-attribute name="header" value="/WEB-INF/views/header.jsp"/>
+<put-attribute name="body" value=""/>
+<put-attribute name="footer" value="/WEB-INF/views/footer.jsp"/>
+
+<put-list-attribute name="javascripts">
+<add-attribute value ="http://code.highcharts.com/highcharts.js"></add-attribute>
+<add-attribute value="js/defaultjs/jquery-1.10.2.js"></add-attribute>
+<add-attribute value="js/defaultjs/jquery-ui.js"></add-attribute>
+<add-attribute value="js/bootstrap/bootstrap.js"></add-attribute>
+<add-attribute value="js/bootstrap/npm.js"></add-attribute>
+<!-- <add-attribute value="js/ncframework/AppOverlay.js"></add-attribute> -->
+</put-list-attribute>
+
+<put-list-attribute name="stylesheets">
+	<add-attribute value="style/jquery-ui.css"></add-attribute>
+	<add-attribute value="style/font.css"></add-attribute>
+	<add-attribute value="style/bootstrap/bootstrap.css"></add-attribute>
+	<add-attribute value="style/bootstrap/bootstrap-theme.css"></add-attribute>
+	<add-attribute value="style/application.css"></add-attribute>
+	<add-attribute value="style/appOverlay.css"></add-attribute>
+</put-list-attribute>
+</definition>
+
+<definition name="register" extends="base.WebFlowDefination" id="register" >
+	
+	<put-attribute name="header" value=""/>
+	<put-attribute name="footer" value=""/>
+<put-attribute name="body" value="/WEB-INF/views/register.jsp" />
+
+<put-list-attribute name="javascripts" inherit="true">
+<add-attribute value="js/customjs/ValidateAccount.js"></add-attribute>
+<add-attribute value="js/createUser/createUser.js"></add-attribute>
+</put-list-attribute>
+
+<put-list-attribute name="stylesheets" inherit="true">
+	<add-attribute value="style/custom/register.css"></add-attribute>
+	<add-attribute value="style/custom/customCheckbox.css"></add-attribute>
+    <add-attribute value="style/custom/validateAccount.css"></add-attribute>
+</put-list-attribute>
+
+</definition>	
+
+<definition name="fileUpload" extends="base.WebFlowDefination" id="fileUpload">
+	<put-attribute name="header" value="/WEB-INF/views/privatePages/fileUploadHeader.jsp"/>
+	<put-attribute name="body">
+		<definition template="/WEB-INF/views/privatePages/fileUploadBody.jsp" extends="fileUpload">
+			<put-attribute name="fileUploadLeft" value="/WEB-INF/views/privatePages/fileUploadLeft.jsp"/>
+			<put-attribute name="fileUploadCenterBody" value="/WEB-INF/views/privatePages/fileUploadCenterBody.jsp"/>
+			<put-attribute name="fileUploadRight" value="/WEB-INF/views/privatePages/fileUploadRight.jsp"/>	
+		</definition>
+	</put-attribute>
+	<put-attribute name="footer" value="Footer files not included"/>
+	
+	<put-list-attribute name="javascripts" inherit="true">
+		<add-attribute value="js/fileupload/jquery.fileupload.js"></add-attribute>
+		<add-attribute value="js/fileupload/jquery.iframe-transport.js"></add-attribute>
+	</put-list-attribute>
+	<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="style/internal/commonLayout.css"></add-attribute>
+	</put-list-attribute>
+</definition>
+
+
+
+
+
+
+
+	
+		
+</tiles-definitions>

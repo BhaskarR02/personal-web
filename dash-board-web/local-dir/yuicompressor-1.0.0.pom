@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.aexp.maven.plugins</groupId>
+    <artifactId>yuicompressor-maven-plugin</artifactId>
+    <packaging>maven-plugin</packaging>
+    <name>Yahoo UI Compressor - Maven Plugin</name>
+    <version>1.0.0</version>
+    <parent>
+        <groupId>com.americanexpress.as</groupId>
+        <artifactId>myca-basic-pom</artifactId>
+        <version>1.2</version>
+    </parent>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-script-ant</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ant</groupId>
+            <artifactId>ant-contrib</artifactId>
+            <version>1.0b2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aexp.maven.plugins</groupId>
+            <artifactId>yuicompressor-ant-task</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+    <description>Maven plugin that integrates integrates the Yahoo UI Compressor Ant task into a maven build process.</description>
+    <url>https://maven-plugins.aexpdev.extra.aexp.com</url>
+    <developers>
+        <developer>
+            <id>cmorar</id>
+            <name>Calin Morar</name>
+            <email>calin.n.morar@aexp.com</email>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:svn:https://maven-plugins.aexpdev.extra.aexp.com/svn/maven-plugins/tags/yuicompressor-maven-plugin-1.0.0</connection>
+        <url>scm:svn:https://maven-plugins.aexpdev.extra.aexp.com/svn/maven-plugins/tags/yuicompressor-maven-plugin-1.0.0</url>
+      <developerConnection>scm:svn:https://maven-plugins.aexpdev.extra.aexp.com/svn/maven-plugins/tags/yuicompressor-maven-plugin-1.0.0</developerConnection>
+  </scm>
+    <organization>
+        <name>American Express</name>
+    </organization>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>2.3</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven</groupId>
+                        <artifactId>maven-plugin-tools-ant</artifactId>
+                        <version>2.0.1</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <goalPrefix>yuicompressor</goalPrefix>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

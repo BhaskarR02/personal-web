@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="
+http://www.springframework.org/schema/webflow
+http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+<var name="fileUploadBody" class="com.transport.model.FileUploadBody"/>
+<var name="fileUploadHeader" class="com.transport.model.FileUploadFromHeader"/>
+<!-- <on-start>
+<evaluate expression="transportWebFlow.uploadHeader()"/>
+</on-start> -->
+
+<view-state id="fileUploadBody" model="fileUploadBody">
+	<transition on="submit">
+		<evaluate expression="transportWebFlow.fileUploadSubmit(fileUploadBody.file)" result="viewScope.cities"/>
+	</transition>
+	
+	<transition on="submitTableButton" bind="false">
+		<evaluate expression="transportWebFlow.saveTable(flowRequestContext)"/>
+	</transition>
+	
+	<transition on="check">
+		<evaluate expression="transportWebFlow.showCities()"/>
+	</transition>
+</view-state>
+</flow>

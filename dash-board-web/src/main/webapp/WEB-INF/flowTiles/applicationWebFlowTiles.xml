@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="base.pamFlow"
+		template="/WEB-INF/views/webflowLayout/webFlowLayout.jsp">
+		<put-attribute name="title" value="Orange" />
+		<put-attribute name="header" value="" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="" />
+        <put-attribute name="jsfiles" value=""></put-attribute>
+		
+		<put-list-attribute name="javascripts">
+		    <add-attribute value="js/default-min.js"/>
+		    <add-attribute value="js/defaultjs/angular-ui-router.js"/>
+			<!-- <add-attribute value="js/angular-custom/services/DialogService.js" />
+			<add-attribute value="js/applicationBoot.js" /> -->
+		</put-list-attribute>
+		
+		<put-list-attribute name="stylesheets">
+		   <add-attribute value="">
+		   </add-attribute>
+		</put-list-attribute>
+	</definition>
+
+	<definition name="pam" extends="base.pamFlow" id="pam">
+		<put-attribute name="header" value="" />
+		<put-attribute name="body" value ="/WEB-INF/views/personalDashBoard/pam.jsp"/>
+			<!-- <definition template="/WEB-INF/views/applicationLogin.jsp"
+				name="applicationLoginDefault" extends="applicationLogin">
+				<put-attribute name="login"
+					value="/WEB-INF/views/applicationLogin/login.jsp" />
+				<put-attribute name="signUp"
+					value="/WEB-INF/views/applicationLogin/signUp.jsp" />
+			</definition>
+		</put-attribute> -->
+		<put-attribute name="footer" value="" />
+		<put-attribute name="jsfiles" value="/WEB-INF/views/jscss.jsp"/>
+		<put-list-attribute name="stylesheets" inherit="true">
+		  <add-attribute value="style/main_home.css"/>
+		</put-list-attribute>
+		</definition>
+
+		<!-- <put-list-attribute name="javascripts" inherit="true">
+			<add-attribute value="js/applicationLogin/login_p.js" />
+			<add-attribute value="js/applicationLogin/loginBoot.js"></add-attribute>
+		</put-list-attribute>
+
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="style/application.css"></add-attribute>
+			<add-attribute value="style/applicationLibrary.css"></add-attribute>
+			<add-attribute value="style/pdsStyleSheet.css"></add-attribute>
+		</put-list-attribute>
+
+	</definition> -->
+	
+	<!-- <definition name="junction" extends="base.pamFlow" id="junction">
+		<put-attribute name="header" value="" />
+		<put-attribute name="body" value="/WEB-INF/views/junction/junction.jsp"/>
+		<put-attribute name="footer" value="" />
+
+		<put-list-attribute name="javascripts" inherit="true"/>
+			
+		
+		<put-list-attribute name="stylesheets" inherit="true">
+			<add-attribute value="style/junction/junction.css"/>
+			<add-attribute value="style/demo.css"/>
+		</put-list-attribute> 
+			
+		
+
+	</definition>-->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+</tiles-definitions>

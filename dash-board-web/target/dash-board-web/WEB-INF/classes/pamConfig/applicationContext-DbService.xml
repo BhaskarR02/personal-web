@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:aop="http://www.springframework.org/schema/aop"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:jee="http://www.springframework.org/schema/jee"
+xmlns:lang="http://www.springframework.org/schema/lang"
+xmlns:p="http://www.springframework.org/schema/p"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:util="http://www.springframework.org/schema/util"
+xmlns:mvc="http://www.springframework.org/schema/mvc"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/jee
+http://www.springframework.org/schema/jee/spring-jee.xsd
+http://www.springframework.org/schema/lang
+http://www.springframework.org/schema/lang/spring-lang.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd
+http://www.springframework.org/schema/mvc
+http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+<bean id="teDaDataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+				<property name="driverClassName" value ="${jdbc.driverClassName}"/>
+				<property name="url" value="${jdbc.databaseurl}"/>
+				<property name="username" value="${jdbc.username}"/>
+				<property name="password" value ="${jdbc.password}"/>
+</bean>
+
+<bean id="sessionFactory"
+class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+<property name="dataSource" ref="teDaDataSource"/>
+<property name ="mappingLocations">
+		<list>
+		       <value>classpath:com/hbm/DashBoardUser.hbm.xml</value>
+				<!-- <value>classpath:Country.hbm.xml</value>
+				<value>classpath:AccountType.hbm.xml</value>
+				<value>classpath:Stocks.hbm.xml</value>
+				<value>classpath:SecurityQuestion.hbm.xml</value>
+				<value>classpath:ShoppingBrandMaster.hbm.xml</value> -->
+			    <!-- <value>classpath:BasicBilling.hbm.xml</value> -->
+			    <!-- <value>classpath:GetRegisteredUser.hbm.xml</value> -->
+				<!-- <value>classpath:com/hbm/State.hbm.xml</value> -->
+		</list>
+</property>
+<property name = "hibernateProperties">
+		<props>
+			<prop key="dialect">${hibernate.dialect}</prop>
+			<prop key="show_sql">${hibernate.showsql}</prop>
+			<prop key="hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+			<prop key="connection.autocommit">true</prop>
+			<prop key="hibernate.connection.release_mode">after_transaction</prop>
+			<prop key="transaction.auto_close_session">true</prop>
+		</props>
+</property>
+</bean>
+		<bean id="abstractDaoTarget" class="com.bhaskar.generic.dao.GenericDaoImpl" abstract="true">
+		<property name="sessionFactory">
+		<ref bean="sessionFactory"/>
+		</property>
+</bean>
+
+	<bean id = "transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager" lazy-init="true">
+	<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+				<tx:attributes>
+					<tx:method name="get*" read-only="true" propagation="REQUIRED"/>
+					<tx:method name="*" propagation="REQUIRED"/>
+			</tx:attributes>
+	</tx:advice>
+
+<!-- <bean id ="countryDao" parent="abstractDaoTarget" 
+class="com.bhaskar.dbservice.impl.CountryDaoImpl">
+<constructor-arg>
+	<value>com.bhaskar.entity.Country</value>
+</constructor-arg>
+</bean>
+
+<bean id="accountTypeDao" parent="abstractDaoTarget" 
+class="com.bhaskar.dbservice.impl.AccountTypeDaoImpl">
+	<constructor-arg>
+		<value>com.bhaskar.entity.AccountType</value>
+	</constructor-arg>
+</bean>
+
+<bean id="stockMarketDao" parent="abstractDaoTarget" 
+class="com.bhaskar.dbservice.impl.StockDaoImpl">
+	<constructor-arg>
+		<value>com.bhaskar.entity.Stocks</value>
+	</constructor-arg>
+</bean>
+
+<bean id="securityQuestionsDao" parent="abstractDaoTarget" 
+class="com.bhaskar.dbservice.impl.SecurityQuestionsDaoImpl">
+	<constructor-arg>
+		<value>com.bhaskar.entity.SecurityQuestions</value>
+	</constructor-arg>
+</bean>
+<bean id="shoppingBrandMasterDao" parent="abstractDaoTarget" 
+class="com.shoping.dbservice.impl.ShoppingBrandMasterDaoImpl">
+	<constructor-arg>
+		<value>com.shopping.entity.ShoppingBrandMaster</value>
+	</constructor-arg>
+</bean> -->
+
+
+
+<!-- <bean id="basicValueDao" parent="abstractDaoTarget"
+		class="com.billing.dbservice.impl.BillingBasicValueDaoImpl">
+	<constructor-arg>
+		<value>com.billing.entity.BasicValues</value>
+	</constructor-arg>
+</bean> -->
+
+<!-- <bean id="iGetRegisteredUserDao" parent="abstractDaoTarget" 
+        class="com.registeredUser.dbservice.impl.GetRegisteredUserDaoImpl">
+        <constructor-arg>
+        	<value>com.registeredUser.user.entity.GetRegisteredUser</value>
+        </constructor-arg>
+        
+        
+        </bean> -->
+
+	<bean id="dashBoardUserDao" parent="abstractDaoTarget" 
+           class="com.dashboard.dbService.impl.DashBoardDaoImpl">
+	<constructor-arg>
+		<value>com.dashboard.entity.DashBoardUser</value>
+	</constructor-arg>
+</bean>
+
+
+</beans>

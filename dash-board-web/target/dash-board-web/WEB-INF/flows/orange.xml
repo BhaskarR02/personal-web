@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+    
+    <var name="login" class="com.application.login.model.LoginModel" />
+    <var name="junction" class="com.application.login.model.JunctionModel"/>
+    
+    
+    
+    <view-state id="orange" model="login" >
+    	<transition on="submit" to="validateLogin" >
+    		<!-- <evaluate expression="" result="flowScope.loginValidate">
+    		
+    		</evaluate> -->
+    		
+    	</transition>
+    </view-state>
+    
+   
+  <action-state id="validateLogin">
+    	<evaluate expression="appFlowController.validateUser(flowScope.login,flowRequestContext)" result="flowScope.validateLogin"/>
+    	
+    	<transition on="${flowScope.validateLogin.result == true}" to="junction" on-exception="" />
+    	<transition on="${flowScope.validateLogin.result == false}" to="junction"/>
+    	<!-- <transition on="failure" to="orange"/> -->
+    </action-state>
+    
+    
+    
+    
+   <!--  <decision-state id="testSuccess" >
+    	<if test="login.isSuccess==true" then="junction" else=""/>
+    </decision-state> -->
+    
+    
+    
+    
+   
+    
+    <view-state id="junction" model="junction" view="junction">
+    </view-state>   
+   <!--  <decision-state id="validateLogin">
+     <if then="" test="appFlowController.validateUser(flowScope.login,flowRequestContext)" else=""/>
+    
+    
+    </decision-state> -->
+    
+    
+   <!--  <decision-state id="">
+     <if then="" test=""/>
+     <e>
+    </decision-state> -->
+    
+    
+<!-- <on-start>
+        <evaluate expression="webflowEventDelegator.applicationSignUp()" result="flowScope.registerComponents"></evaluate>
+</on-start>  -->
+
+    <!-- <view-state id="login">
+    	<transition on="validateUser">
+    		
+    	</transition>
+    </view-state> -->
+	<!-- <action-state id="login">
+    <evaluate expression="appFlowController.validateUser(flowRequestContext)"></evaluate>
+   
+   </action-state> -->
+
+
+   
+    
+</flow>

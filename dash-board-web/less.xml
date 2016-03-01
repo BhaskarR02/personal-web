@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lesscss" default="less" basedir="/Users/samsung/Oct4/personal-web">
+    <property name="dir.project"
+        value="/Users/samsung/Oct4/personal-web"/>
+    <property name="dir.css" value="${dir.project}/src/main/webapp/style" />
+    <property name="lessc" value="Users/samsung/AppData/Roaming/npm/node_modules/less/bin/lessc" />
+    <property name="pathToNode" value="Users/samsung/AppData/Roaming/npm/node_modules/less/bin" />
+ 
+    <target name="less" description="Compile LESS files">
+        <antcall target="lessfile">
+            <param name="file.name" value="${dir.css}/pwHome/pwHome.less" />
+        </antcall>
+        <!--<antcall target="lessfile">
+            <param name="file.name" value="test2" />
+        </antcall>-->
+    </target>
+  
+    <target name="lessfile">
+        <exec executable="${lessc}" failonerror="true">
+            <env key="PATH" value="${env.PATH}:${pathToNode}" />
+            <arg line="-x ${dir.css}/${file.name}.less ${dir.css}/${file.name}.css" />
+        </exec>
+    </target>
+</project>

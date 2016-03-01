@@ -1,0 +1,1550 @@
+<?xml version="1.0"?>
+
+<!--
+    Steps to run build.xml
+    1.Install Ant .Follow Steps from 
+      http://www.mkyong.com/ant/how-to-install-apache-ant-on-windows/
+    2.Navigate to the location where build.xml is locaed. Mostly it will be in basedir
+    3.Run Command ant
+    Example:C:\Users\samsung\Oct4\personal-web>ant -->
+
+
+   <project name="personal-web" default="js_compress" basedir="/Users/samsung/Oct4/personal-web">
+   
+   <property name="js_source" value="${basedir}/src/main/webapp/js" />
+    <property name="css_source" value="${basedir}/src/main/webapp/style" />
+    <property name="target" value="${basedir}/target/yuicompressor" />
+   	<property name="yui.dir" value="${basedir}/local-dir/yuicompressor-2.4.7.jar"/>
+    <mkdir dir="${target}"/>
+   
+   	<target name="js_compress" depends="default_minify, appUtility_minify">
+   	   	   
+   	   	   </target>
+   	   	
+   <!--<target name="css_compress" depends="personalcss_minify"></target>-->
+   <!--Minify Utility files -->
+   	
+   <target name ="appUtility_minify" depends="">
+   	  <echo>Phase 1: Bundling App utility JS Files</echo>
+   	  <concat destfile="${target}/appUtil_concat.js" fixlastline="true" force="true" eol="unix">
+   	    <filelist dir="${js_source}/">
+   	      <file name="appUtil.js"/>
+   	    </filelist>
+   	  </concat>
+   	<echo>Phase 2: Filtering Firebug statements.</echo>
+   	        <copy filtering="true" file="${target}/appUtil_concat.js" tofile="${target}/appUtil_concat.js">
+   	            <filterchain>
+   	                <trim />
+   	                <striplinecomments>
+   	                    <comment value="console." />
+   	                </striplinecomments>
+   	            </filterchain>
+   	        </copy>
+   	        <!--  Final compression -->
+   	        <echo>Phase 3: Minifying JavaScript source code.</echo>
+   	   	    
+   	   	<java jar="${yui.dir}" fork="true">
+   	   	    <arg value="--charset"/>
+   	   	    <arg value="UTF-8"/>
+   	   	    <arg value="-v"/>         
+   	   	    <arg value="${target}/appUtil_concat.js"/>
+   	   	    <arg value="-o"/>
+   	   	    <arg value="${js_source}/appUtil-min.js"/>
+   	   	</java>
+   	   	  <echo> finished</echo>
+   	</target>
+   	
+   	
+   	
+   	
+   	
+   <!-- Individual file Compression -->
+   <target name="default_minify" depends="">
+      <echo>Phase 1: Bundling Default JS Files</echo>
+           <concat destfile="${target}/default_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/"> 
+                <file name="defaultjs/jquery-1.11.3.js" /> 
+            	<file name="defaultjs/jquery-ui.js" />
+                <file name="defaultjs/jquery.ui.widget.js" /> 
+                <file name="defaultjs/angular.js" />
+                <file name="defaultjs/angular-route.js" /> 
+                <file name="defaultjs/angular-sanitize.js" />
+            	<file name="defaultjs/less.js" />
+            	<!--<file name="defaultjs/jquery.ui.search.js" />
+                 <file name="defaultjs/multiselect.js" /> 
+               <file name="defaultjs/jquery.jqGrid.src.js" />--> 
+             </filelist>
+        </concat>
+        <!-- Remove loggers -->
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/default_concat.js" tofile="${target}/default.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        <!--  Final compression -->
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+   	    
+   	<java jar="${yui.dir}" fork="true">
+   	    <arg value="--charset"/>
+   	    <arg value="UTF-8"/>
+   	    <arg value="-v"/>         
+   	    <arg value="${target}/default.js"/>
+   	    <arg value="-o"/>
+   	    <arg value="${js_source}/default-min.js"/>
+   	</java>
+   	
+   	
+   	
+   	
+   	
+   	
+   	<!--<apply executable="java"  dest="${js_source}" parallel="true" verbose="false"  >
+   	     	
+   	     	<fileset dir="${target}"
+   	     	 includes ="default.js"/>
+   	         <fileset dir="${target}" >
+   	         	<patternset>
+   	         	 <include name="default.js"/>
+   	         	</patternset>
+   	         </fileset>
+   	     	<arg line="-jar" />
+   	                 <arg path="${yui.dir}"/>
+   	    
+   	     	<arg line="charset UTF-8"/>
+   	             <arg line="-v"/>     
+   	     	<srcfile/>
+   	                 <arg line="-o"/>
+   	     	<mapper type="glob" from="*.js" to="*-min.js" ></mapper>
+   	     <targetfile/>
+   	     </apply> -->
+   	    <echo> finished</echo>
+   	
+   	
+        <!--<js-compress todir="${js_source}" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}" >
+                <include name="default_min.js" />
+            </fileset>
+        </js-compress>-->
+       
+   </target>
+   	
+   	
+   	
+   	
+   	<!--<target name="css_compress_full">
+   	        <echo>Phase 1: Concactenanting CSS files.</echo>
+   	        <concat destfile="${target}/estmt_compress.css" fixlastline="true" force="true" eol="unix">
+   	            <filelist dir="${css_source}">
+   	                Stylx Sheets
+   	                <file name="stylx/css/normalize.css" />
+   	                <file name="stylx/css/fonts.css" />
+   	                <file name="stylx/css/helpers.css" />
+   	                <file name="stylx/css/buttons.css" />
+   	                <file name="stylx/css/animations.css" />
+   	                <file name="stylx/css/css-callout.css" />
+   	                <file name="stylx/css/dialogs.css" />
+   	                <file name="stylx/css/checkbox.css" />
+   	                
+   	                <file name="spr-crd-slct.css" />
+   	                <file name="card-selector.css" />
+   	                <file name="mini_summary.css" />
+   	                <file name="jquery-ui-1.8.20.custom.css" />
+   	                <file name="ui.calendar.css" />
+   	                <file name="ui.callout.css" />
+   	                <file name="estmt-table.css" />
+   	                <file name="list_mobile.css" />
+   	                <file name="receipt.css" />
+   	                <file name="receiptShoebox.css" />
+   	                <file name="ui.shoebox.css" />
+   					<file name="receipt-overlay.css" />
+   					<file name="receipt-match-table.css" />
+   					<file name="receipt-match-shoebox.css" />
+   					<file name="receipt-match-ie-upload.css" />
+   					
+   					<file name="sprite-RM.css" />
+   	                <file name="qb-core.css" />
+   	                <file name="qb-split.css" />
+   	                <file name="qb-batch.css" />
+   	                <file name="ui.coatree.css" />
+   	                <file name="ui.amexcheck.css" />
+   	                <file name="ui.coamenu.css" />
+   	                <file name="ui.messagebox.css" />
+   	                <file name="layout.css" />
+   	                <file name="offers.css" />
+   	                <file name="text.css" />
+   	                <file name="tags.css" />
+   	                <file name="old-card-selector.css" />
+   	                <file name="period-selector.css" />
+   	                <file name="qb-moneybar.css" />
+   	                <file name="ui.blindmaker.css" />
+   	                <file name="toolbar.css" />
+   	                <file name="timePeriod.css" />
+   	                <file name="bank-feed.t-and-c.css" />
+   	                <file name="bank-feed.dialogs.css" />
+   	                <file name="bank-feed.overlay.css" />
+   	                <file name="styleable-select.css" />
+   	                <file name="styleable-select.qb.css" />
+   	                <file name="element-blocker.css" />
+   	                <file name="page-blocker.css" />
+   	                <file name="bank-feed.toolbar-button.css" />
+   	                <file name="bank-feed.card-select.css" />
+   	                <file name="bank-feed.categories.css" />
+   	                <file name="paperless.dialogs.css" />
+   					<file name="ui.overlay.css" />
+   	                <file name="ui.cardselect.css" />
+   	                <file name="ui.picker.css" />
+   	            </filelist>
+   	        </concat>
+   	        <echo>Phase 2: Minifying CSS source.</echo>
+   	        <css-compress todir="${css_source}" linebreak="500">
+   	            <fileset dir="${target}">
+   	                <include name="estmt_compress.css" />
+   	            </fileset>
+   	        </css-compress>
+   	        <echo>Phase 3: Appending un-comppressed CSS to the compressed one.</echo>
+   	        <concat destfile="${css_source}/estmt2015-R5.css" force="true" eol="unix">
+   	            <filelist dir="${css_source}">
+   	                <file name="estmt_compress.css" />
+   	                <file name="uncompressed.css" />
+   	            </filelist>
+   	        </concat>
+   	        <delete file="${css_source}/estmt_compress.css" failonerror="false"/>
+   	    </target>
+   	    
+   	         <target name="css_compress_1">
+   	        <echo>Phase 1: Concactenanting CSS files.</echo>
+   	        <concat destfile="${target}/estmt_compress_1.css" fixlastline="true" force="true" eol="unix">
+   	            <filelist dir="${css_source}">
+   	                <file name="list_view.css" />
+   	                <file name="graph.css" />
+   	                <file name="icons.css" />           
+   	                <file name="qb-list.css" />
+   	                <file name="buttons.css" />
+   	                <file name="search_field.css" />
+   	                <file name="window.css" />
+   	                <file name="summary.css" />
+   	                <file name="rewards.css" />
+   	                <file name="gumbyLayer.css" />
+   	                <file name="dialogs.css" />
+   	                <file name="rrb.css" />
+   	                <file name="amex-calendar.css" />
+   	                <file name="tour.css" />
+   	                <file name="sprite-small.css" />
+   	                <file name="sprite-large.css" />
+   	            	<file name="trendView.css" />
+   	                <file name="pendingTransactions.css"/>
+   	            </filelist>
+   	        </concat>
+   	        <echo>Phase 2: Minifying CSS source.</echo>
+   	        <css-compress todir="${css_source}" linebreak="500">
+   	            <fileset dir="${target}">
+   	                <include name="estmt_compress_1.css" />
+   	            </fileset>
+   	        </css-compress>
+   	        <echo>Phase 3: Appending un-comppressed CSS to the compressed one.</echo>
+   	        <concat destfile="${css_source}/estmt1_2015-R5.css" force="true" eol="unix">
+   	            <filelist dir="${css_source}">
+   	                <file name="estmt_compress_1.css" />
+   	                
+   	            </filelist>
+   	        </concat>
+   	        <delete file="${css_source}/estmt_compress_1.css" failonerror="false"/>
+   	    </target>
+   	    
+   	     <target name="css_compress_mbl">
+   	        <echo>Phase 1: Concactenanting CSS files.</echo>
+   	        <concat destfile="${target}/estmt_compress_mbl.css" fixlastline="true" force="true" eol="unix">
+   	            <filelist dir="${css_source}">
+   	                <file name="sprite_mobile.css" />
+   	                <file name="estmt-table.css" />
+   	                <file name="estmt-table-etd.css" />
+   	                <file name="mobile_estmt-table.css" />          
+   	                <file name="ui.mb.amexsearch.css" />
+   	                <file name="ui.mb.amexselect.css" />
+   	                <file name="ui.mb.amexswiper.css" />
+   	                <file name="list_mobile.css" />
+   	            </filelist>
+   	        </concat>
+   	        <echo>Phase 2: Minifying CSS source.</echo>
+   	        <css-compress todir="${css_source}" linebreak="500">
+   	            <fileset dir="${target}">
+   	                <include name="estmt_compress_mbl.css" />
+   	            </fileset>
+   	        </css-compress>
+   	        <echo>Phase 3: Appending un-comppressed CSS to the compressed one.</echo>
+   	        <concat destfile="${css_source}/estmt_mbl2015-R5.css" force="true" eol="unix">
+   	            <filelist dir="${css_source}">
+   	                <file name="estmt_compress_mbl.css" />
+   	                
+   	            </filelist>
+   	        </concat>
+   	        <delete file="${css_source}/estmt_compress_mbl.css" failonerror="false"/>
+   	    </target>-->
+</project>
+
+
+
+
+
+
+ <!--<project basedir="${basedir}" name="${project.name}">
+    set global properties
+    <property name="js_source" value="${basedir}/src/main/webapp/js" />
+    <property name="css_source" value="${basedir}/src/main/webapp/css" />
+    <property name="target" value="${basedir}/target/yuicompressor" />
+    <mkdir dir="${target}" />
+
+    <target name="js_compress" depends="personaljs_minify">js_compress_full,app_s_minify,list_s_minify,summary_s_minify,graph_s_minify,
+                                       rewards_s_minify,search_s_minify,tier1_s_minify,tags_s_minify,dialog_s_minify,
+                                       receipt_s_minify, receipt_match_s_minify, qb_s_minify,js_compress_mbl,js_compress_lite_mbl,
+                                       mb_lib_minify ,trends_minify
+    </target>
+    <target name="css_compress" depends="personalcss_minify">
+    </target>
+    Individula Bundle Compression
+    Library Module Bundle
+    <target name="lib_minify">
+        <echo>Phase 1: Concactenanting Library JS files</echo>
+        <concat destfile="${target}/lib_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/"> 
+                <file name="lib/jquery/jqueryBrowser.js" /> 
+                Include dummy firebug in compressed version
+                <file name="lib/jquery/plugins/jquery.string.js" />
+                <file name="lib/jquery/plugins/jquery.form.js" />
+                <file name="lib/jquery/plugins/jquery.identify.js" />
+                <file name="lib/jquery/plugins/jquery.record.js" />
+                <file name="lib/jquery/plugins/jquery.placeholder.js" />
+                <file name="lib/jquery/plugins/jquery.test.js" />
+                <file name="lib/jquery/plugins/jquery.template.js" />
+                <file name="lib/jquery/plugins/jquery.ui.callout.js" />
+                <file name="lib/jquery/plugins/jquery.cookie.js" />
+                <file name="lib/jquery/plugins/jquery.popeye.js" />
+                <file name="lib/jquery/plugins/jquery.jcp.js" />
+                <file name="lib/jquery/plugins/jquery.ui.amexcheck.js" />
+                <file name="lib/jquery/plugins/jquery.edit-text.js" />
+                <file name="lib/jquery/plugins/jquery.ui.message.js" />
+
+                zoomer has to be moved to receipt_match secondary after bau receipt code is removed
+                <file name="lib/jquery/plugins/jquery.ui.zoomer.js" />
+
+                New Libraries related to NavBar Framework
+                <file name="lib/pubsub.js" />
+                <file name="lib/NavBar.js" />
+                <file name="lib/util.js" />
+                <file name="lib/event.js" />
+                <file name="lib/polyfills.js" />
+                <file name="lib/date.js" />
+                <file name="lib/css-callout.js" />
+
+                BlindMaker
+                <file name="lib/jquery/plugins/jquery.ui.blindmaker.js" />
+
+                OverlayManager
+                <file name="lib/jquery/plugins/jquery.overlay.js" />
+
+				StyleableSelect
+				<file name="lib/StyleableSelect.js"/>
+
+                Amex UI components
+                <file name="lib/amex/Amex.js" />
+                <file name="lib/amex/Observable.js" />
+                <file name="lib/amex/Container.js" />
+                <file name="lib/amex/BlockContainer.js" />
+                <file name="lib/amex/FloatingContainer.js" />
+                <file name="lib/amex/ToggleButton.js" />
+                <file name="lib/amex/NavBar.js" />
+                <file name="lib/amex/PageOverlay.js" />
+                <file name="lib/amex/Flyout.js" />
+                <file name="lib/amex/OverlayManager_new.js" />
+                <file name="lib/amex/Window.js" />                
+                <file name="lib/amex/MenuItem.js" />
+                <file name="lib/amex/MenuSeparator.js" />
+                <file name="lib/amex/Menu.js" />
+                <file name="lib/amex/MenuButton.js" />
+                <file name="lib/amex/MessageBox.js" />
+                <file name="lib/amex/Util.js" />
+                <file name="lib/amex/ReceiptWindow.js" />
+                <file name="lib/amex/Tour.js" />
+				<file name="app/Calendar2.js" />
+
+                 very specialized classes particular to eStatement
+                <file name="lib/des/Des.js" />
+                <file name="lib/des/CardSelectItem.js" />
+                <file name="lib/des/CardSelectButton.js" />
+                <file name="lib/des/PeriodSelectButton.js" />
+                <file name="lib/des/CategoryButton.js" />
+                <file name="lib/Promise.js" />
+
+                 Omniture reporting
+                <file name="app/omniture/Omniture.js" />
+                <file name="app/Dialog.js" />
+                <file name="app/graph/testSelector.js" />
+
+
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/lib_concat.js" tofile="${target}/lib_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/lib" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="lib_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+
+    Receipt Bundle
+    <target name="receipt_p_minify">
+        <echo>Phase 1: Concactenanting Receipts Primary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/receipt_p_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="app/receipts/ReceiptDropDown_p.js" />
+                <file name="app/receipts/ReceiptUI_p.js" /> 
+                <file name="app/receipts/Receipt_p.js" />
+                <file name="app/receipts/Shoebox_p.js" />
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/receipt_p_concat.js" tofile="${target}/receipt_p_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/receipts" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="receipt_p_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    <target name="receipt_s_minify">
+        <echo>Phase 1: Concactenanting Receipts Secondary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/receipt_s_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="lib/jquery/plugins/jquery.ui.shoebox.js" />
+                <file name="lib/jquery/plugins/jquery.ui.loadimg.js" />
+                <file name="app/receipts/ReceiptDropDown_s.js" />
+                <file name="app/receipts/ReceiptUI_s.js" />
+                <file name="app/receipts/Receipt_s.js" />
+                <file name="app/receipts/Shoebox_s.js" />
+                <file name="app/receipts/fileupload.js" />
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/receipt_s_concat.js" tofile="${target}/receipt_s_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/receipts" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="receipt_s_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+
+	PL Bundle Bundle
+    <target name="receipt_match_p_minify">
+        <echo>Phase 1: Concactenanting PL Receiptmatch Primary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/receipt_match_p_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+				<file name="app/receipt_match/ReceiptShoeboxUI_p.js" />
+				<file name="app/receipt_match/PaperlessEnrollmentController_p.js" />
+                <file name="app/receipt_match/ReceiptDropTargetsUI_p.js" />
+				<file name="app/receipt_match/PaperlessUIController_p.js" />
+				<file name="app/receipt_match/ReceiptKeyboardDropUI_p.js" />
+				<file name="app/DockingUIController.js" />
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/receipt_match_p_concat.js" tofile="${target}/receipt_match_p_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/receipt_match" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="receipt_match_p_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    <target name="receipt_match_s_minify">
+        <echo>Phase 1: Concactenanting PL Receiptmatch Secondary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/receipt_match_s_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="app/receipt_match/PaperlessEnrollmentController_s.js" />
+                <file name="app/receipt_match/ReceiptListController_s.js" />
+                <file name="app/receipt_match/ReceiptOverlayUI_s.js" />
+                <file name="app/receipt_match/ReceiptShoeboxUI_s.js" />
+                <file name="app/receipt_match/IeReceiptUploadFormDialog_s.js" />
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/receipt_match_s_concat.js" tofile="${target}/receipt_match_s_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/receipt_match" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="receipt_match_s_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+	PL Bundle End
+
+
+    QuickBooks Bundle
+    <target name="qb_p_minify">
+        <echo>Phase 1: Concactenanting QuickBooks Primary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/qb_p_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="integ/QbSplitUI_p.js" />
+                <file name="integ/QbDropDown_p.js" />
+                <file name="integ/QB_p.js" />
+                <file name="integ/QbUI_p.js" />
+                <file name="integ/QbTags_p.js" />
+                <file name="integ/QbList_p.js" />
+                <file name="integ/QbEstmtWidgetUI_p.js" />                
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/qb_p_concat.js" tofile="${target}/qb_p_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/integ" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="qb_p_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+
+    <target name="qb_s_minify">
+        <echo>Phase 1: Concactenanting Quickbooks Secondary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/qb_s_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="lib/jquery/plugins/jquery.ui.coatree.js" />
+                <file name="lib/jquery/plugins/jquery.ui.autocomplete.js" />
+                <file name="lib/jquery/plugins/jquery.ui.coamenu.js" />
+                <file name="lib/jquery/plugins/jquery.ui.qbprogressbar.js" />
+                <file name="lib/jquery/plugins/jquery.ui.cardselect.js" />
+                <file name="lib/jquery/plugins/jquery.ui.picker.js" />
+                <file name="lib/jquery/plugins/progressBar.js" />
+                <file name="integ/EDR_s.js" />
+                <file name="integ/EDRPopUp_s.js" />
+                <file name="integ/Forfeiture_s.js" />
+                <file name="integ/ForfeiturePopUp_s.js" />
+                <file name="integ/QbManageExpenseAccount.js" />
+                <file name="integ/QbSplitUI_s.js" />
+                <file name="integ/QbDropDown_s.js" />
+                <file name="integ/QB_s.js" />
+                <file name="integ/QbUI_s.js" />
+                <file name="integ/QbTags_s.js" />
+                <file name="integ/QbList_s.js" />
+                <file name="integ/QbListUI_s.js" />
+                <file name="integ/QbListPickersUI_s.js" />
+                <file name="integ/QbBatchUI_s.js" />
+                <file name="integ/QbMoneyBarUI_s.js" />
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/qb_s_concat.js" tofile="${target}/qb_s_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/integ" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="qb_s_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    
+       Smart V2 Bundle
+    <target name="smartV2_p_minify">
+        <echo>Phase 1: Concatenating Smart V2 Primary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/smartV2_p_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="app/qb/QbBankFeedBootstrapper.js" />
+                <file name="app/qb/QbToolbarButton.js" />
+                <file name="app/UserCardDataService.js" />
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/smartV2_p_concat.js" tofile="${target}/smartV2_p_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/qb" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="smartV2_p_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    
+    Mobile Library Bundle
+    <target name="mb_lib_minify">
+        <echo>Phase 1: Concactenanting Mobile Library Bundle JavaScript files.</echo>
+        <concat destfile="${target}/mb_lib_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="mb/jquery.animatetable.js" />
+                <file name="mb/jquery.amex.amexswiper.js" />
+                <file name="mb/jquery.amex.amexselect.js" />
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/mb_lib_concat.js" tofile="${target}/mb_lib_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="mb_lib_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+
+    Dialog Bundle
+    <target name="dialog_p_minify">
+        <echo>Phase 1: Concactenanting Dialog Primary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/dialog_p_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+
+                <file name="app/dialogs/Download_p.js" />
+                <file name="app/dialogs/Print_p.js" />
+                <file name="app/dialogs/Pending_p.js" />
+
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/dialog_p_concat.js" tofile="${target}/dialog_p_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/dialogs" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="dialog_p_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    <target name="dialog_s_minify">
+        <echo>Phase 1: Concactenanting Dialogs Secondary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/dialog_s_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+
+                <file name="app/dialogs/Download_s.js" />
+                <file name="app/dialogs/Print_s.js" />
+                <file name="app/dialogs/Pending_s.js" />
+
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/dialog_s_concat.js" tofile="${target}/dialog_s_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/dialogs" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="dialog_s_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    Tags Bundle
+    <target name="tags_p_minify">
+        <echo>Phase 1: Concactenanting Tags Primary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/tags_p_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="lib/jquery/plugins/jquery.ui.tagbar.js" />
+                <file name="app/tags/AutoTagCalendar_p.js" />
+                <file name="app/tags/Tag_p.js" />
+                <file name="app/tags/TagList_p.js" />
+                <file name="app/tags/TagUI_p.js" />
+                <file name="app/tags/TagAction_p.js" />
+                <file name="app/tags/TagLock_p.js" />
+
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/tags_p_concat.js" tofile="${target}/tags_p_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/tags" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="tags_p_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    <target name="tags_s_minify">
+        <echo>Phase 1: Concactenanting Tags Secondary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/tags_s_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+
+                <file name="app/tags/AutoTagCalendar_s.js" />
+                <file name="app/tags/Tag_s.js" />
+                <file name="app/tags/TagList_s.js" />
+                <file name="app/tags/TagUI_s.js" />
+                <file name="app/tags/TagAction_s.js" />
+                <file name="app/tags/TagLock_s.js" />
+
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/tags_s_concat.js" tofile="${target}/tags_s_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/tags" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="tags_s_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    Tier 1 Bundle
+    <target name="tier1_p_minify">
+        <echo>Phase 1: Concactenanting Tier 1 Primary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/tier1_p_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+               <file name="app/TopLinks_p.js" />
+                <file name="app/T1_p.js" />
+                <file name="app/timePeriod_R2.js" />
+                <file name="app/CustomPeriod_p.js" />
+                <file name="app/T2_p.js" />
+                <file name="app/AllOpen_p.js" />
+                <file name="app/BlindManager.js" />
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/tier1_p_concat.js" tofile="${target}/tier1_p_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="tier1_p_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    <target name="tier1_s_minify">
+        <echo>Phase 1: Concactenanting Tier 1 Secondary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/tier1_s_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="app/TopLinks_s.js" />
+                <file name="app/T1_s.js" />
+                <file name="app/CustomPeriod_s.js" />
+                <file name="app/T2_s.js" />
+                <file name="app/AllOpen_s.js" />
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/tier1_s_concat.js" tofile="${target}/tier1_s_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="tier1_s_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    Filter & Search bundle
+   <target name="search_p_minify">
+       <echo>Phase 1: Concactenanting Filter -  Search Primary Bundle JavaScript files.</echo>
+       <concat destfile="${target}/search_p_concat.js" fixlastline="true" force="true" eol="unix">
+           <filelist dir="${js_source}/">
+               <file name="app/search/Search_p.js" />
+           </filelist>
+       </concat>
+       then strip calls to console.
+       <echo>Phase 2: Filtering Firebug statements.</echo>
+       <copy filtering="true" file="${target}/search_p_concat.js" tofile="${target}/search_p_min-2015-R5.js">
+           <filterchain>
+               <trim />
+               <striplinecomments>
+                   <comment value="console." />
+               </striplinecomments>
+           </filterchain>
+       </copy>
+       then do full blown compression
+       <echo>Phase 3: Minifying JavaScript source code.</echo>
+       <js-compress todir="${js_source}/app/search" munge="true" linebreak="500" verbose="false">
+           <fileset dir="${target}">
+               <include name="search_p_min-2015-R5.js" />
+           </fileset>
+       </js-compress>
+   </target>
+   <target name="search_s_minify">
+       <echo>Phase 1: Concactenanting Filter - Search Secondary Bundle JavaScript files.</echo>
+       <concat destfile="${target}/search_s_concat.js" fixlastline="true" force="true" eol="unix">
+           <filelist dir="${js_source}/">
+               <file name="app/search/Search_s.js" />
+               <file name="app/search/SearchUIController_s.js" />
+           </filelist>
+       </concat>
+       then strip calls to console.
+       <echo>Phase 2: Filtering Firebug statements.</echo>
+       <copy filtering="true" file="${target}/search_s_concat.js" tofile="${target}/search_s_min-2015-R5.js">
+           <filterchain>
+               <trim />
+               <striplinecomments>
+                   <comment value="console." />
+               </striplinecomments>
+           </filterchain>
+       </copy>
+       then do full blown compression
+       <echo>Phase 3: Minifying JavaScript source code.</echo>
+       <js-compress todir="${js_source}/app/search" munge="true" linebreak="500" verbose="false">
+           <fileset dir="${target}">
+               <include name="search_s_min-2015-R5.js" />
+           </fileset>
+       </js-compress>
+   </target>
+   Rewards Bundle
+    <target name="rewards_p_minify">
+        <echo>Phase 1: Concactenanting Rewards Primary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/rewards_p_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="app/rewards/PreLoadRewards_p.js" />
+                <file name="app/rewards/Rewards_p.js" />
+                <file name="app/rewards/RewardsPanel_p.js" />
+
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/rewards_p_concat.js" tofile="${target}/rewards_p_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/rewards" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="rewards_p_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    <target name="rewards_s_minify">
+        <echo>Phase 1: Concactenanting Rewards Secondary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/rewards_s_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                
+                <file name="app/rewards/Rewards_s.js" />
+                <file name="app/rewards/RewardsPanel_s.js" />
+                <file name="app/rewards/BonusPoints_s.js" />
+                <file name="app/rewards/BonusPopUp_s.js" />
+
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/rewards_s_concat.js" tofile="${target}/rewards_s_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/rewards" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="rewards_s_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+     Graph Bundle
+    <target name="graph_p_minify">
+        <echo>Phase 1: Concactenanting Graph Primary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/graph_p_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+
+                <file name="app/graph/Graph_p.js" />
+
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/graph_p_concat.js" tofile="${target}/graph_p_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/graph" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="graph_p_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    <target name="graph_s_minify">
+        <echo>Phase 1: Concactenanting Graph Secondary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/graph_s_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+
+                <file name="app/graph/Graph_s.js" />
+
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/graph_s_concat.js" tofile="${target}/graph_s_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/graph" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="graph_s_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+   
+    Summary Bundle
+    
+    <target name="summary_p_minify">
+        <echo>Phase 1: Concactenanting Summary Primary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/summary_p_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+
+                <file name="app/summary/SummaryView_p.js" />
+            </filelist>
+        </concat> 
+        then strip calls to console. 
+       <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/summary_p_concat.js" tofile="${target}/summary_p_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/summary" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="summary_p_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    <target name="summary_s_minify">
+        <echo>Phase 1: Concactenanting Summary Secondary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/summary_s_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+
+                <file name="app/summary/SummaryUIController_s.js" />
+                <file name="app/summary/SummaryView_s.js" />
+
+            </filelist>
+        </concat> 
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/summary_s_concat.js" tofile="${target}/summary_s_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/summary" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="summary_s_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target> 
+    List Bundle
+    <target name="list_p_minify">
+        <echo>Phase 1: Concactenanting List Primary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/list_p_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">                 
+                <file name="app/list/ListTable_p.js" />                
+                <file name="app/list/List_p.js" />
+                <file name="app/list/List_mb_p.js" />                
+                <file name="app/list/ListLinks_p.js" />             
+                <file name="app/list/Pdf_p.js" />
+                <file name="app/list/PdfValid_p.js" />
+
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/list_p_concat.js" tofile="${target}/list_p_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/list" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="list_p_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    <target name="list_s_minify">
+        <echo>Phase 1: Concactenanting List Secondary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/list_s_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="app/list/ListTable_s.js" />
+                <file name="app/list/List_s.js" />
+                <file name="app/list/List_mb_s.js" />                
+                <file name="app/list/ListLinks_s.js" />
+                <file name="app/list/ListUIController_s.js" />
+                <file name="app/list/Pdf_s.js" />
+                <file name="app/list/PdfValid_s.js" />
+                <file name="app/list/LegalPopUp_s.js" />
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/list_s_concat.js" tofile="${target}/list_s_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app/list" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="list_s_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    App Logic Bundle
+    <target name="app_p_minify">
+        <echo>Phase 1: Concactenanting App Logic Primary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/app_p_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="app/Page.js" />
+                <file name="app/App_p.js" />
+                <file name="app/DisputeNotification_p.js" />
+                <file name="LiteListener_p.js" />
+                <file name="app/UIController_p.js" />
+                <file name="app/Status_p.js" />
+                <file name="app/preferences/Preferences.js" />
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/app_p_concat.js" tofile="${target}/app_p_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="app_p_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+    <target name="app_s_minify">
+        <echo>Phase 1: Concactenanting App Logic Secondary Bundle JavaScript files.</echo>
+        <concat destfile="${target}/app_s_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="app/App_s.js" />
+                <file name="app/DisputeNotification_s.js" />
+                <file name="app/UIController_s.js" />
+                <file name="app/Status_s.js" />
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/app_s_concat.js" tofile="${target}/app_s_min-2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}/app" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="app_s_min-2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+	
+	
+	TRENDS LOGIC BUNDLE
+	
+	
+	<target name="trends_minify">
+		<echo> Phase 1: Concactenanting of Trends Logic Bundle Javascript files.</echo>
+		<concat destfile="${target}/trends_concat.js" fixlastline = "true" force="true" eol="unix">
+			<filelist dir ="${js_source}/">
+			    <file name="lib/jquery/jqueryBrowser.js" /> 
+	            <file name="lib/jquery/plugins/jquery.form.js" />
+	            <file name="lib/jquery/plugins/jquery.string.js" />
+	            <file name="lib/jquery/plugins/jquery.identify.js" />
+	            <file name="lib/jquery/plugins/jquery.record.js" />
+                <file name="lib/jquery/plugins/jquery.placeholder.js" />
+                <file name="lib/jquery/plugins/jquery.test.js" />
+				<file name="lib/jquery/plugins/jquery.template.js" />
+                <file name="lib/jquery/plugins/jquery.ui.callout.js" />
+                <file name="lib/jquery/plugins/jquery.cookie.js" />
+				<file name="lib/jquery/plugins/jquery.popeye.js" />
+                <file name="lib/jquery/plugins/jquery.jcp.js" />
+                <file name="lib/jquery/plugins/jquery.ui.amexcheck.js" />
+	            <file name="lib/jquery/plugins/jquery.ui.message.js" />
+	            <file name="lib/jquery/plugins/jquery.edit-text.js" />
+	            <file name="lib/util.js" />
+                <file name="lib/event.js" />
+				<file name="app/Calendar2.js" />
+	            <file name="lib/pubsub.js" />
+                <file name="lib/NavBar.js" />
+				<file name="lib/jquery/plugins/jquery.ui.blindmaker.js" />   
+				<file name="lib/StyleableSelect.js"/>
+				<file name="lib/amex/Amex.js" />
+	            <file name="lib/amex/Observable.js" />
+                <file name="lib/amex/Container.js" />
+                <file name="lib/amex/BlockContainer.js" />
+                <file name="lib/amex/FloatingContainer.js" />
+                <file name="lib/amex/ToggleButton.js" />
+                <file name="lib/amex/NavBar.js" />
+                <file name="lib/amex/PageOverlay.js" />
+                <file name="lib/amex/Flyout.js" />
+                <file name="lib/amex/OverlayManager_new.js" />
+                <file name="lib/amex/Window.js" />                
+                <file name="lib/amex/MenuItem.js" />
+                <file name="lib/amex/MenuSeparator.js" />
+                <file name="lib/amex/Menu.js" />
+                <file name="lib/amex/MenuButton.js" />
+				<file name="lib/css-callout.js" />
+			    <file name="lib/des/Des.js" />
+			    <file name="lib/des/CardSelectItem.js" />
+			    <file name="lib/des/CardSelectButton.js" />
+			    <file name="mb/jquery.amex.amexswiper.js" />
+                <file name="mb/jquery.amex.amexselect.js" />
+				   <file name="app/Page.js" />
+				   <file name="app/omniture/Omniture.js" />
+				   <file name="trends/TrendsStatus.js"/>
+				   <file name="trends/TrendsUIController.js"/>
+				   
+				   <file name="trends/TrendsTopLinks.js"/>
+				   <file name="trends/trendsList/TrendsList.js"/>
+				   <file name="trends/trendsList/TrendsListUIController.js"/>
+				   <file name="trends/TrendsT1.js"/>
+				   <file name="trends/TrendsT2.js"/>
+			   
+			   
+			   <file name="trends/TrendsDisputeNotification.js"/>
+			   <file name="trends/TrendsParameters.js"/>
+			   <file name="trends/trendsList/TrendsListMb.js"/>
+			   <file name="trends/trendsList/TrendsListTable.js"/>
+			   <file name="app/BlindManager.js" />
+			    <file name="app/timePeriod_R2.js" />
+			   <file name="trends/trendsList/TrendsList.js"/>
+			   <file name="trends/trendsList/TrendsListUIController.js"/>
+			   <file name="trends/TrendsGraph.js"/>
+			   <file name="trends/testSelector.js"/>
+               <file name="app/Dialog.js" />               
+			     <file name="Boot_common.js" />
+				<file name="trends/TrendsDelegator.js"/>
+                <file name="trends/scrollpoint.js"/>
+				<file name="trends/services/TrendsService.js"/>
+                <file name="trends/controllers/pdf-header.directive.js"/>
+				<file name="trends/controllers/YesController.js"/>
+                <file name="trends/controllers/YOYSpendCtrl.js"/>
+				<file name="trends/controllers/TopTenMrchController.js"/>
+                <file name="trends/controllers/CatYOYController.js"/>
+                <file name="trends/controllers/SpendingListController.js"/>
+				<file name="trends/controllers/DownloadCtrl.js"/>
+				<file name="trends/controllers/PrintCtrl.js"/>
+				<file name="TrendsBoot.js"/>	
+			</filelist>
+		</concat>
+		<echo>Phase 2: Filtering Firebug Statements</echo>
+		  <copy filtering="true" file="${target}/trends_concat.js" tofile="${target}/trends2015-R5.js">
+				<filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+		  </copy>
+		  then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="trends2015-R5.js" />
+            </fileset>
+        </js-compress>
+	</target>
+	
+	
+
+    <target name="js_compress_full" depends="app_p_minify,list_p_minify,summary_p_minify,graph_p_minify,rewards_p_minify,search_p_minify,tier1_p_minify,tags_p_minify,dialog_p_minify,receipt_p_minify, qb_p_minify, smartV2_p_minify, lib_minify, receipt_match_p_minify">
+        <echo>Phase 1: Concactenanting JavaScript files.</echo>
+        <concat destfile="${target}/estmt_concat.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+                <file name="lib/lib_min-2015-R5.js" />
+                <file name="mb/jquery.amex.amexswiper.js" />
+                <file name="mb/jquery.amex.amexselect.js" />
+                <file name="app/app_p_min-2015-R5.js"/>
+                <file name="app/list/list_p_min-2015-R5.js" />
+                <file name="app/summary/summary_p_min-2015-R5.js" />
+                <file name="app/graph/graph_p_min-2015-R5.js" />
+                <file name="app/rewards/rewards_p_min-2015-R5.js" />
+                <file name="app/search/search_p_min-2015-R5.js" />
+				<file name="app/receipt_match/receipt_match_p_min-2015-R5.js" />
+                <file name="app/tier1_p_min-2015-R5.js" />
+                <file name="app/tags/tags_p_min-2015-R5.js" />
+                <file name="app/dialogs/dialog_p_min-2015-R5.js" />
+                <file name="app/receipts/receipt_p_min-2015-R5.js" />
+                <file name="app/qb/smartV2_p_min-2015-R5.js" />
+                <file name="Boot_common.js" />
+                <file name="Boot.js" />
+                <file name="Boot_start.js" />
+				<file name="TrendsBoot.js"/> Common file between estmt main page & T&I page
+				<file name="integ/qb_p_min-2015-R5.js" />
+                <file name="formParameters.js" />
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/estmt_concat.js" tofile="${target}/estmt2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="estmt2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+   
+    <target name="js_compress_lite_mbl">
+        <echo>Phase 1: Concactenanting JavaScript files.</echo>
+        <concat destfile="${target}/estmt_concat_lite_mb.js" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${js_source}/">
+
+                 File specific for jquery and plugin   
+                <file name="lib/jquery/plugins/jquery.jcp.js" />
+                <file name="lib/amex/Amex-shim.js" />
+                <file name="app_lite/list/Listlite_mb.js" />
+                <file name="app/omniture/Omniture.js" />
+                <file name="Boot_commonlite.js" />
+                <file name="Boot_startlite.js" />
+                <file name="mb/jquery.amex.amexswiper.js" />
+                <file name="mb/jquery.amex.amexselect.js" />
+                <file name="formParameters.js" />
+
+            </filelist>
+        </concat>
+        then strip calls to console.
+        <echo>Phase 2: Filtering Firebug statements.</echo>
+        <copy filtering="true" file="${target}/estmt_concat_lite_mb.js" tofile="${target}/estmt_lite_mb2015-R5.js">
+            <filterchain>
+                <trim />
+                <striplinecomments>
+                    <comment value="console." />
+                </striplinecomments>
+            </filterchain>
+        </copy>
+        then do full blown compression
+        <echo>Phase 3: Minifying JavaScript source code.</echo>
+        <js-compress todir="${js_source}" munge="true" linebreak="500" verbose="false">
+            <fileset dir="${target}">
+                <include name="estmt_lite_mb2015-R5.js" />
+            </fileset>
+        </js-compress>
+    </target>
+
+    <target name="css_compress_full">
+        <echo>Phase 1: Concactenanting CSS files.</echo>
+        <concat destfile="${target}/estmt_compress.css" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${css_source}">
+                Stylx Sheets
+                <file name="stylx/css/normalize.css" />
+                <file name="stylx/css/fonts.css" />
+                <file name="stylx/css/helpers.css" />
+                <file name="stylx/css/buttons.css" />
+                <file name="stylx/css/animations.css" />
+                <file name="stylx/css/css-callout.css" />
+                <file name="stylx/css/dialogs.css" />
+                <file name="stylx/css/checkbox.css" />
+                
+                <file name="spr-crd-slct.css" />
+                <file name="card-selector.css" />
+                <file name="mini_summary.css" />
+                <file name="jquery-ui-1.8.20.custom.css" />
+                <file name="ui.calendar.css" />
+                <file name="ui.callout.css" />
+                <file name="estmt-table.css" />
+                <file name="list_mobile.css" />
+                <file name="receipt.css" />
+                <file name="receiptShoebox.css" />
+                <file name="ui.shoebox.css" />
+				<file name="receipt-overlay.css" />
+				<file name="receipt-match-table.css" />
+				<file name="receipt-match-shoebox.css" />
+				<file name="receipt-match-ie-upload.css" />
+				
+				<file name="sprite-RM.css" />
+                <file name="qb-core.css" />
+                <file name="qb-split.css" />
+                <file name="qb-batch.css" />
+                <file name="ui.coatree.css" />
+                <file name="ui.amexcheck.css" />
+                <file name="ui.coamenu.css" />
+                <file name="ui.messagebox.css" />
+                <file name="layout.css" />
+                <file name="offers.css" />
+                <file name="text.css" />
+                <file name="tags.css" />
+                <file name="old-card-selector.css" />
+                <file name="period-selector.css" />
+                <file name="qb-moneybar.css" />
+                <file name="ui.blindmaker.css" />
+                <file name="toolbar.css" />
+                <file name="timePeriod.css" />
+                <file name="bank-feed.t-and-c.css" />
+                <file name="bank-feed.dialogs.css" />
+                <file name="bank-feed.overlay.css" />
+                <file name="styleable-select.css" />
+                <file name="styleable-select.qb.css" />
+                <file name="element-blocker.css" />
+                <file name="page-blocker.css" />
+                <file name="bank-feed.toolbar-button.css" />
+                <file name="bank-feed.card-select.css" />
+                <file name="bank-feed.categories.css" />
+                <file name="paperless.dialogs.css" />
+				<file name="ui.overlay.css" />
+                <file name="ui.cardselect.css" />
+                <file name="ui.picker.css" />
+            </filelist>
+        </concat>
+        <echo>Phase 2: Minifying CSS source.</echo>
+        <css-compress todir="${css_source}" linebreak="500">
+            <fileset dir="${target}">
+                <include name="estmt_compress.css" />
+            </fileset>
+        </css-compress>
+        <echo>Phase 3: Appending un-comppressed CSS to the compressed one.</echo>
+        <concat destfile="${css_source}/estmt2015-R5.css" force="true" eol="unix">
+            <filelist dir="${css_source}">
+                <file name="estmt_compress.css" />
+                <file name="uncompressed.css" />
+            </filelist>
+        </concat>
+        <delete file="${css_source}/estmt_compress.css" failonerror="false"/>
+    </target>
+    
+         <target name="css_compress_1">
+        <echo>Phase 1: Concactenanting CSS files.</echo>
+        <concat destfile="${target}/estmt_compress_1.css" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${css_source}">
+                <file name="list_view.css" />
+                <file name="graph.css" />
+                <file name="icons.css" />           
+                <file name="qb-list.css" />
+                <file name="buttons.css" />
+                <file name="search_field.css" />
+                <file name="window.css" />
+                <file name="summary.css" />
+                <file name="rewards.css" />
+                <file name="gumbyLayer.css" />
+                <file name="dialogs.css" />
+                <file name="rrb.css" />
+                <file name="amex-calendar.css" />
+                <file name="tour.css" />
+                <file name="sprite-small.css" />
+                <file name="sprite-large.css" />
+            	<file name="trendView.css" />
+                <file name="pendingTransactions.css"/>
+            </filelist>
+        </concat>
+        <echo>Phase 2: Minifying CSS source.</echo>
+        <css-compress todir="${css_source}" linebreak="500">
+            <fileset dir="${target}">
+                <include name="estmt_compress_1.css" />
+            </fileset>
+        </css-compress>
+        <echo>Phase 3: Appending un-comppressed CSS to the compressed one.</echo>
+        <concat destfile="${css_source}/estmt1_2015-R5.css" force="true" eol="unix">
+            <filelist dir="${css_source}">
+                <file name="estmt_compress_1.css" />
+                
+            </filelist>
+        </concat>
+        <delete file="${css_source}/estmt_compress_1.css" failonerror="false"/>
+    </target>
+    
+     <target name="css_compress_mbl">
+        <echo>Phase 1: Concactenanting CSS files.</echo>
+        <concat destfile="${target}/estmt_compress_mbl.css" fixlastline="true" force="true" eol="unix">
+            <filelist dir="${css_source}">
+                <file name="sprite_mobile.css" />
+                <file name="estmt-table.css" />
+                <file name="estmt-table-etd.css" />
+                <file name="mobile_estmt-table.css" />          
+                <file name="ui.mb.amexsearch.css" />
+                <file name="ui.mb.amexselect.css" />
+                <file name="ui.mb.amexswiper.css" />
+                <file name="list_mobile.css" />
+            </filelist>
+        </concat>
+        <echo>Phase 2: Minifying CSS source.</echo>
+        <css-compress todir="${css_source}" linebreak="500">
+            <fileset dir="${target}">
+                <include name="estmt_compress_mbl.css" />
+            </fileset>
+        </css-compress>
+        <echo>Phase 3: Appending un-comppressed CSS to the compressed one.</echo>
+        <concat destfile="${css_source}/estmt_mbl2015-R5.css" force="true" eol="unix">
+            <filelist dir="${css_source}">
+                <file name="estmt_compress_mbl.css" />
+                
+            </filelist>
+        </concat>
+        <delete file="${css_source}/estmt_compress_mbl.css" failonerror="false"/>
+    </target>
+    
+    
+    
+        
+    
+</project> -->
