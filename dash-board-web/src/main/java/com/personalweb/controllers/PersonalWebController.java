@@ -30,7 +30,7 @@ public class PersonalWebController {
 	@RequestMapping(value="/home.htm" ,method=RequestMethod.GET)
 	public @ResponseBody String displayHome() throws DaException{
 		System.out.println(iBoardUserInterface.getLoggedUser().getUniqueId());
-		System.out.println("ahhahah");
+		System.out.println("print from git hub");
 		return "hello";
 	}
 
