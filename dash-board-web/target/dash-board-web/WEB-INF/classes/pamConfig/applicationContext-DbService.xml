@@ -39,7 +39,7 @@ class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 <property name="dataSource" ref="teDaDataSource"/>
 <property name ="mappingLocations">
 		<list>
-		       <value>classpath:com/hbm/DashBoardUser.hbm.xml</value>
+		       <value>classpath:DashBoardUser.hbm.xml</value>
 				<!-- <value>classpath:Country.hbm.xml</value>
 				<value>classpath:AccountType.hbm.xml</value>
 				<value>classpath:Stocks.hbm.xml</value>
